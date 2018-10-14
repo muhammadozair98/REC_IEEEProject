@@ -1,9 +1,4 @@
 /*
- * --------------------------------------------------------------------------------------------------------------------
- * Example sketch/program showing an access control system.
- * --------------------------------------------------------------------------------------------------------------------
-
- * 
  * Typical pin layout used:
  * -----------------------------------------------------------------------------------------
  *             MFRC522      Arduino       Arduino   Arduino    Arduino          Arduino
@@ -19,7 +14,6 @@
  * Red led --> D5
  * Yellow led --> D3
  * Green Led --> D2
- *
  */
 
 #include <SPI.h>
@@ -84,16 +78,16 @@ void loop() {
      nuidPICC[i] = rfid.uid.uidByte[i];
    }
    
-  digitalWrite(red_led, LOW);
-  digitalWrite(green_led, LOW);
-  digitalWrite(yellow_led, HIGH);
+  digitalWrite(5, 0);
+  digitalWrite(2, 0);
+  digitalWrite(3, 1);
 
 
   if(0xB5 == nuidPICC[0] && 0x31 == nuidPICC[1] && 
       0x56 == nuidPICC[2] && 0x45 == nuidPICC[3] ) // change this line to whatever card you want to grant access.
     {
-      digitalWrite(yellow_led, LOW);
-      digitalWrite(green_led, HIGH);
+      digitalWrite(3, 0);
+      digitalWrite(2, 1);
       
       Serial.println("Access Granted !!!");
       
@@ -101,17 +95,17 @@ void loop() {
     }
   else
     {
-      digitalWrite(yellow_led, LOW);
-      digitalWrite(red_led, HIGH);
+      digitalWrite(3, 0);
+      digitalWrite(5, 1);
       
       Serial.println("Access Denied !!!");
       
       delay(2000);
     }
     
-  digitalWrite(red_led, LOW);
-  digitalWrite(green_led, LOW);
-  digitalWrite(yellow_led, HIGH);
+  digitalWrite(5, 0);
+  digitalWrite(2, 1);
+  digitalWrite(3, 0);
 
   // Halt PICC
   rfid.PICC_HaltA();
@@ -120,11 +114,10 @@ void loop() {
   rfid.PCD_StopCrypto1();
 }
 
-
 /**
- * Helper routine to dump a byte array as hex values to Serial. 
+ * Helper routine to dump a byte array as hex values to Serial 
  */
-void printHex(byte *buffer, byte bufferSize) {
+void printHex(byte *buffer, byte bufferSize){
   for (byte i = 0; i < bufferSize; i++) {
     //Serial.print(buffer[i] < 0x10 ? " 0" : " ");
     //Serial.print(buffer[i], HEX);
@@ -133,7 +126,7 @@ void printHex(byte *buffer, byte bufferSize) {
 }
 
 /**
- * Helper routine to dump a byte array as dec values to Serial.
+ * Helper routine to dump a byte array as dec values to Serial
  */
 void printDec(byte *buffer, byte bufferSize) {
   for (byte i = 0; i < bufferSize; i++) {
